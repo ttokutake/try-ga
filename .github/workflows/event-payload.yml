@@ -11,8 +11,6 @@ jobs:
     steps:
     - name: Dump GitHub context
       env:
-        ISSUE_BODY: ${{ github.event.issue.body }}
-        COMMENT_BODY: ${{ github.event.comment.body }}
+        GITHUB_EVENT: ${{ github.event }}
       run: |
-        echo "$ISSUE_BODY"
-        echo "$COMMENT_BODY"
+        echo "$GITHUB_EVENT"
