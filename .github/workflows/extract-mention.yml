@@ -12,12 +12,11 @@ jobs:
     steps:
       - name: Check for mentions
         id: check_mentions
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
           echo "Checking for mentions..."
-          # コメント本文を安全に扱うために、変数を二重引用符で囲む
-          COMMENT_BODY="${{ github.event.comment.body }}"
-          ESCAPED_COMMENT=$(printf '%q' "$COMMENT_BODY")
-          if [[ "$ESCAPED_COMMENT" == *"@quipper/k12-crm-opede"* ]]; then
+          if [[ "$COMMENT_BODY" == *"@quipper/k12-crm-opede"* ]]; then
             echo "Mention found."
             # 新しいset-output構文を使用
             echo "mention_found=true" >> $GITHUB_OUTPUT
@@ -29,10 +28,10 @@ jobs:
 
       - name: Check for mentions in Issue Body
         id: check_mentions_issue
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
           echo "Checking for mentions in issue body..."
-          # Issue本文を安全に扱うために、変数を二重引用符で囲む
-          ISSUE_BODY="${{ github.event.issue.body }}"
           if [[ "$ISSUE_BODY" == *"@quipper/k12-crm-opede"* ]]; then
             echo "Mention found in issue body."
             # 新しいset-output構文を使用
