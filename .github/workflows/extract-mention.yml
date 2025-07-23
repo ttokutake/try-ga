@@ -1,0 +1,43 @@
+name: extract mention
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [opened, edited]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for mentions
+        id: check_mentions
+        run: |
+          echo "Checking for mentions..."
+          # コメント本文を安全に扱うために、変数を二重引用符で囲む
+          COMMENT_BODY="${{ github.event.comment.body }}"
+          if [[ "$COMMENT_BODY" == *"@quipper/k12-crm-opede"* ]]; then
+            echo "Mention found."
+            # 新しいset-output構文を使用
+            echo "mention_found=true" >> $GITHUB_OUTPUT
+          else
+            echo "No mention found."
+            # 新しいset-output構文を使用
+            echo "mention_found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for mentions in Issue Body
+        id: check_mentions_issue
+        run: |
+          echo "Checking for mentions in issue body..."
+          # Issue本文を安全に扱うために、変数を二重引用符で囲む
+          ISSUE_BODY="${{ github.event.issue.body }}"
+          if [[ "$ISSUE_BODY" == *"@quipper/k12-crm-opede"* ]]; then
+            echo "Mention found in issue body."
+            # 新しいset-output構文を使用
+            echo "mention_found=true" >> $GITHUB_OUTPUT
+          else
+            echo "No mention found in issue body."
+            # 新しいset-output構文を使用
+            echo "mention_found=false" >> $GITHUB_OUTPUT
+          fi
