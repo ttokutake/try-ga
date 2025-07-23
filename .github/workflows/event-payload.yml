@@ -11,6 +11,6 @@ jobs:
     steps:
     - name: Dump GitHub context
       env:
-        GITHUB_EVENT: ${{ github.event }}
+        GITHUB_EVENT: ${{ toJson(github.event) }}
       run: |
         echo "$GITHUB_EVENT"
